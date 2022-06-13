@@ -1,21 +1,23 @@
 package main
 
 import (
-	"context"
+	// "context"
 	"fmt"
 	"log"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/ethclient"
+	// "github.com/ethereum/go-ethereum/common"
+	// "github.com/ethereum/go-ethereum/ethclient"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/crypto"
 )
 
 func main() {
 	//connecting to the Ethereum Network using Infura node
-	conn, err := ethclient.Dial("https://mainnet.infura.io/v3/2ea67de6c0fe4745b93a7bf99ba89c86")
+	// conn, err := ethclient.Dial("https://mainnet.infura.io/v3/2ea67de6c0fe4745b93a7bf99ba89c86")
 
-	if err != nil {
-		log.Fatal("Failed to connect to Eth node", err)
-	}
+	// if err != nil {
+	// 	log.Fatal("Failed to connect to Eth node", err)
+	// }
 
 	//create context which allows to create communication between the concurrent Eth node communication  and the main application
 	// cntxt := context.Background()
@@ -30,13 +32,27 @@ func main() {
 	// }
 
 	//reading wallet balannce
-	account := common.HexToAddress("0x4CE66b68404Bb3775202C1F78a87150E925B53C2")
+	// account := common.HexToAddress("0x4CE66b68404Bb3775202C1F78a87150E925B53C2")
 
-	balance, err := conn.BalanceAt(context.Background(), account, nil)
+	// balance, err := conn.BalanceAt(context.Background(), account, nil)
+
+	// if err != nil {
+	// 	log.Fatal("unable to get balance")
+	// } else {
+	// 	fmt.Println(balance)
+	// }
+
+	//creating wallets
+	privateKey, err := crypto.GenerateKey()
 
 	if err != nil {
-		log.Fatal("unable to get balance")
-	} else {
-		fmt.Println(balance)
+		log.Fatal("unable to generate new keys")
 	}
+
+	//convert the privatekey from ECDSA format to Bytes format
+	privateKeyBytes := crypto.FromECDSA(privateKey)
+	//hexadecimal private key
+	fmt.Println(hexutil.Encode(privateKeyBytes))
+
+	//creating a new wallet, which converts it into Bytes and then into Hexadecimal
 }
